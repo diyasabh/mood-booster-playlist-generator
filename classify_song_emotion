@@ -1,0 +1,22 @@
+import pandas as pd
+import numpy as np
+
+file_path = '/Users/xxx/Downloads/songs_normalize.csv'
+df = pd.read_csv(file_path)
+
+# function to classify songs based on heuristic thresholds
+def classify_emotion(row):
+    if row['valence'] > 0.75 and row['energy'] > 0.75:
+        return 'Excited'
+    elif row['valence'] > 0.5:
+        return 'Happy'
+    elif row['valence'] < 0.25 and row['energy'] < 0.25:
+        return 'Sad'
+    elif row['valence'] < 0.4 and row['energy'] > 0.75:
+        return 'Angry'
+    elif row['valence'] < 0.5 and row['energy'] < 0.4:
+        return 'Calm'
+    else:
+        return 'Anxious'
+
+df['Emotion'] = df.apply(classify_emotion, axis=1)
